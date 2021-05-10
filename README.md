@@ -1,5 +1,5 @@
 # Comment2Wechat
-一个将 Typecho 评论推送到 Bark 的插件，修改自![Comment2Wechat](https://github.com/Tsuk1ko/Comment2Wechat)。
+一个将 Typecho 评论推送到 Bark 的插件，修改自 [Comment2Wechat](https://github.com/Tsuk1ko/Comment2Wechat)。
 
 ## 功能
 每当有人评论你的文章时，可以推送到你的 Bark App。    
