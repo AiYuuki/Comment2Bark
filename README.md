@@ -16,6 +16,6 @@
 - 如果你是从 Github 下载的，请记得将插件文件夹重命名为 Comment2Bark
 
 ## 使用
-在 Appstore 中下载 Bark
+在 Appstore 中下载 Bark  
 将 Bark 提供的 Key 粘贴到插件的设置中  
 就这么简单。
