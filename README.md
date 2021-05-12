@@ -1,3 +1,4 @@
+简体中文 | [English](https://github.com/JDYuuki/Comment2Bark/blob/main/docs/README_EN.md)
 # Comment2Wechat
 一个将 Typecho 评论推送到 Bark 的插件，修改自 [Comment2Wechat](https://github.com/Tsuk1ko/Comment2Wechat)。
 
