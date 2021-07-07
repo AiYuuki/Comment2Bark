@@ -1,5 +1,5 @@
 [简体中文](https://github.com/JDYuuki/Comment2Bark) | English
-# Comment2Wechat
+# Comment2Bark
 A plugin to push Typecho comments to Bark，modified from [Comment2Wechat](https://github.com/Tsuk1ko/Comment2Wechat).
 
 ## Function
@@ -18,4 +18,5 @@ Just unzip the `Comment2Bark` folder into `(Typecho root)/usr/plugins` after dow
 ## Use
 Download Bark from the Appstore
 Paste the key provided by Bark into the plugin's settings
+ 
 Done!
