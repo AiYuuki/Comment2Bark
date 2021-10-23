@@ -4,7 +4,7 @@
  * 
  * @package Comment2Bark
  * @author 夕綺Yuuki
- * @version 1.1
+ * @version 1.2
  * @link https://kira.cool
  */
 class Comment2Bark_Plugin implements Typecho_Plugin_Interface {
@@ -57,9 +57,12 @@ class Comment2Bark_Plugin implements Typecho_Plugin_Interface {
             array(
                 '1' => '是',
                 '0' => '否'
-            ),'1', _t('当评论者为自己时不发送通知'), _t('启用后，若评论者为博主，则不会向 Bark 发送通知<br><br><br>
-            此插件由原作者 <a href="https://yian.me">Y!an</a> 的 <a href="https://github.com/YianAndCode/Comment2Bark">Comment2Bark 1.0.0</a> 和 <a href="https://moe.best">神代綺凛</a> 的 <a href="https://github.com/Tsuk1ko/Comment2Wechat">Comment2Bark 2.0.0</a>插件修改而来<br>本插件项目地址：<a href="https://github.com/JDYuuki/Comment2Bark">https://github.com/JDYuuki/Comment2Bark</a>'));
+            ),'1', _t('当评论者为自己时不发送通知'), _t('启用后，若评论者为博主，则不会向 Bark 发送通知，若博主 UID 不为 1，则需要在下方填写博主的 UID'));
         $form->addInput($notMyself);
+        
+        $customUid = new Typecho_Widget_Helper_Form_Element_Text('customUid', NULL, NULL, _t('自定义博主 UID'), _t('（非必填）自定义博主 UID<br><br><br>
+            此插件由原作者 <a href="https://yian.me">Y!an</a> 的 <a href="https://github.com/YianAndCode/Comment2Bark">Comment2Bark 1.0.0</a> 和 <a href="https://moe.best">神代綺凛</a> 的 <a href="https://github.com/Tsuk1ko/Comment2Wechat">Comment2Bark 2.0.0</a>插件修改而来<br>本插件项目地址：<a href="https://github.com/JDYuuki/Comment2Bark">https://github.com/JDYuuki/Comment2Bark</a>'));
+        $form->addInput($customUid);
     }
     
     /**
@@ -88,11 +91,19 @@ class Comment2Bark_Plugin implements Typecho_Plugin_Interface {
         $bark_archive = $options->bark_archive;
 
         $notMyself = $options->notMyself;
+        $customUid = $options->customUid;
         
-        if($comment['authorId'] == 1 && $notMyself == '1') {
-            return  $comment;
+        // 判断是否启用当评论者为自己时不发送通知
+        if($notMyself == '1') {
+            if (!empty($customUid)) {
+                if ($comment['authorId'] == $customUid) {
+                    return $comment;
+                }
+            } elseif ($comment['authorId'] == 1) {
+                return  $comment;
+            }
         }
-
+        
         $text = "您的博客收到了新的评论";
         $desp = $comment['author']."：".$comment['text'];
 
