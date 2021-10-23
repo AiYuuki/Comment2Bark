@@ -3,8 +3,8 @@
  * Bark推送评论通知
  * 
  * @package Comment2Bark
- * @author 神代夕綺
- * @version 1.0
+ * @author 夕綺Yuuki
+ * @version 1.1
  * @link https://kira.cool
  */
 class Comment2Bark_Plugin implements Typecho_Plugin_Interface {
@@ -44,6 +44,15 @@ class Comment2Bark_Plugin implements Typecho_Plugin_Interface {
         $key = new Typecho_Widget_Helper_Form_Element_Text('bark_key', NULL, NULL, _t('Bark Key'), _t('下载 Bark App 后获取Bark key'));
         $form->addInput($key->addRule('required', _t('您必须填写一个正确的 Bark Key')));
         
+        $icon = new Typecho_Widget_Helper_Form_Element_Text('bark_icon', NULL, NULL, _t('Icon'), _t('（非必填）自定义 Bark 推送图标，图标需为 URL 链接'));
+        $form->addInput($icon);
+        
+        $group = new Typecho_Widget_Helper_Form_Element_Text('bark_group', NULL, NULL, _t('Group'), _t('（非必填）自定义 Bark 消息分组'));
+        $form->addInput($group);
+        
+        $archive = new Typecho_Widget_Helper_Form_Element_Text('bark_archive', NULL, NULL, _t('Archive'), _t('（非必填）自定义 Bark 消息保存，值为 1 时保存消息，其他值为不保存，不填则保持默认<br><br>'));
+        $form->addInput($archive);
+
         $notMyself = new Typecho_Widget_Helper_Form_Element_Radio('notMyself',
             array(
                 '1' => '是',
@@ -72,7 +81,12 @@ class Comment2Bark_Plugin implements Typecho_Plugin_Interface {
      */
     public static function bark_send($comment, $post) {
         $options = Typecho_Widget::widget('Widget_Options')->plugin('Comment2Bark');
+
         $bark_key = $options->bark_key;
+        $bark_icon = $options->bark_icon;
+        $bark_group = $options->bark_group;
+        $bark_archive = $options->bark_archive;
+
         $notMyself = $options->notMyself;
         
         if($comment['authorId'] == 1 && $notMyself == '1') {
@@ -82,18 +96,21 @@ class Comment2Bark_Plugin implements Typecho_Plugin_Interface {
         $text = "您的博客收到了新的评论";
         $desp = $comment['author']."：".$comment['text'];
 
-        $postdata = http_build_query(
-            array(
-                'title' => $text,
-                'body' => $desp
-            )
+        $postdata = array(
+            'title' => $text,
+            'body' => $desp
         );
             
+        // 可选项
+        !empty($bark_icon) ? $postdata["icon"] = $bark_icon : "";
+        !empty($bark_group) ? $postdata["group"] = $bark_group : "";
+        !empty($bark_archive) ? $postdata["isArchive"] = $bark_archive : "";
+
         $opts = array('http' =>
             array(
                 'method'  => 'POST',
                 'header'  => 'Content-type: application/x-www-form-urlencoded',
-                'content' => $postdata
+                'content' => http_build_query($postdata)
             ),
             "ssl" => array(
                 "verify_peer" => false,
