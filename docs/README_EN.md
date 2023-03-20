@@ -16,7 +16,8 @@ Just unzip the `Comment2Bark` folder into `(Typecho root)/usr/plugins` after dow
 - If you downloaded it from Github, please remember to rename the plugin folder to Comment2Bark
 
 ## Use
-Download Bark from the Appstore
-Paste the key provided by Bark into the plugin's settings
+1. Download Bark from the Appstore
+
+2. Paste the key provided by Bark into the plugin's settings
  
 Done!
